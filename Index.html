@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhoneUnlock Pro - Unlock & Flash Any Phone</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--warning);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--warning);
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%232c3e50"/><path d="M0 0L100 100M100 0L0 100" stroke="%233498db" stroke-width="1"/></svg>');
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+        }
+        
+        .btn-warning:hover {
+            background: #e67e22;
+        }
+        
+        /* Phone Detection Section */
+        .phone-detection {
+            background: white;
+            padding: 3rem 0;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+        }
+        
+        .detection-area {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .detection-status {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .detected-phone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .phone-icon {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        
+        /* Unlock Methods */
+        .unlock-methods {
+            padding: 3rem 0;
+        }
+        
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .method-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        
+        .method-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .method-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .method-card h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        /* Flashing Section */
+        .flashing-section {
+            background: white;
+            padding: 3rem 0;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .firmware-search {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .firmware-search input, .firmware-search select {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .firmware-results {
+            margin-top: 2rem;
+        }
+        
+        .firmware-item {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Tools Section */
+        .tools-section {
+            padding: 3rem 0;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .tool-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-column ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #bdc3c7;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0.5rem;
+            }
+            
+            .mobile-menu {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .firmware-search {
+                flex-direction: column;
+            }
+            
+            .detected-phone {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">PhoneUnlock<span>Pro</span></div>
+                <div class="mobile-menu">☰</div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#detection">Phone Detection</a></li>
+                        <li><a href="#unlock">Unlock Methods</a></li>
+                        <li><a href="#flashing">Firmware</a></li>
+                        <li><a href="#tools">Tools</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Unlock Any Phone - Save Money on Repair Shops</h1>
+            <p>Use our advanced AI-powered tools to unlock FRP, KG lock, bootloader, Google accounts, and more. Download correct firmware and flash your devices with ease.</p>
+            <a href="#detection" class="btn btn-warning">Start Unlocking Now</a>
+        </div>
+    </section>
+
+    <!-- Phone Detection Section -->
+    <section class="phone-detection" id="detection">
+        <div class="container">
+            <h2 class="section-title">Auto Phone Detection</h2>
+            <div class="detection-area">
+                <p>Connect your phone via USB or let our system detect it automatically</p>
+                <div class="detection-status">
+                    <p id="detection-message">Waiting for device connection...</p>
+                    <div class="detected-phone" id="detected-phone" style="display: none;">
+                        <div class="phone-icon">📱</div>
+                        <div>
+                            <h3 id="phone-model">Samsung Galaxy S21</h3>
+                            <p id="phone-details">Android 12 • Model: SM-G991U</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn" id="detect-btn">Detect My Phone</button>
+                <p class="manual-select">Or <a href="#manual-select">select your phone manually</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Unlock Methods Section -->
+    <section class="unlock-methods" id="unlock">
+        <div class="container">
+            <h2 class="section-title">Unlock Methods</h2>
+            <div class="methods-grid">
+                <div class="method-card">
+                    <div class="method-icon">🔓</div>
+                    <h3>FRP Bypass</h3>
+                    <p>Remove Google Factory Reset Protection without password. Works on Samsung, LG, Huawei and more.</p>
+                    <a href="#" class="btn">Learn More</a>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon">🔒</div>
+                    <h3>KG Lock Removal</h3>
+                    <p>Remove Samsung KG lock (Warranty Void) and reactivate your phone after unauthorized modifications.</p>
+                    <a href="#" class="btn">Learn More</a>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon">⚙️</div>
+                    <h3>Bootloader Unlock</h3>
+                    <p>Unlock bootloader to install custom ROMs, root your device, or bypass carrier restrictions.</p>
+                    <a href="#" class="btn">Learn More</a>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon">💰</div>
+                    <h3>PayJoy Lock Removal</h3>
+                    <p>Remove financial locks from phones purchased through financing programs like PayJoy.</p>
+                    <a href="#" class="btn">Learn More</a>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon">📱</div>
+                    <h3>Screen Lock Removal</h3>
+                    <p>Bypass pattern, PIN, password or fingerprint locks without losing your data.</p>
+                    <a href="#" class="btn">Learn More</a>
+                </div>
+                <div class="method-card">
+                    <div class="method-icon">🔄</div>
+                    <h3>iCloud/Apple ID Removal</h3>
+                    <p>Remove iCloud activation lock from iPhones and iPads when you forgot the Apple ID password.</p>
+                    <a href="#" class="btn">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flashing Section -->
+    <section class="flashing-section" id="flashing">
+        <div class="container">
+            <h2 class="section-title">Firmware Downloads & Flashing</h2>
+            <p>Find and download the correct firmware for your device. Our AI system ensures you get the right version.</p>
+            
+            <div class="firmware-search">
+                <select id="brand-select">
+                    <option value="">Select Brand</option>
+                    <option value="samsung">Samsung</option>
+                    <option value="apple">Apple</option>
+                    <option value="xiaomi">Xiaomi</option>
+                    <option value="oneplus">OnePlus</option>
+                    <option value="lg">LG</option>
+                    <option value="huawei">Huawei</option>
+                </select>
+                <select id="model-select">
+                    <option value="">Select Model</option>
+                </select>
+                <input type="text" id="firmware-search" placeholder="Or search by model...">
+                <button class="btn" id="search-firmware">Search</button>
+            </div>
+            
+            <div class="firmware-results">
+                <div class="firmware-item">
+                    <div>
+                        <h4>Samsung Galaxy S21 (SM-G991U)</h4>
+                        <p>Android 12 • Version: G991USQU5CVA5 • Region: USA (TMB)</p>
+                    </div>
+                    <a href="#" class="btn">Download</a>
+                </div>
+                <div class="firmware-item">
+                    <div>
+                        <h4>Samsung Galaxy S21 (SM-G991U)</h4>
+                        <p>Android 12 • Version: G991USQU5CVB2 • Region: USA (XAA)</p>
+                    </div>
+                    <a href="#" class="btn">Download</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="tools-section" id="tools">
+        <div class="container">
+            <h2 class="section-title">Unlocking Tools</h2>
+            <p>Professional tools used by repair shops worldwide</p>
+            
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-icon">🛠️</div>
+                    <h3>Octoplus Unlock Tool</h3>
+                    <p>Advanced tool for Samsung, LG, Sony and other Android devices.</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🔧</div>
+                    <h3>Z3X Box</h3>
+                    <p>Popular tool for Samsung, Huawei and other Chinese phones.</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">⚡</div>
+                    <h3>Odin</h3>
+                    <p>Samsung's official flashing tool for firmware installation.</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🐆</div>
+                    <h3>Cheetah Pro Tool</h3>
+                    <p>Multi-functional tool for various Android brands and models.</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🤖</div>
+                    <h3>AI Unlock Assistant</h3>
+                    <p>Our proprietary AI system that analyzes your device and suggests best unlock methods.</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🔍</div>
+                    <h3>Deep Agent</h3>
+                    <p>Advanced algorithm that finds vulnerabilities in phone security systems.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>PhoneUnlock Pro</h3>
+                    <p>Your complete solution for unlocking and flashing Android and iOS devices.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#detection">Phone Detection</a></li>
+                        <li><a href="#unlock">Unlock Methods</a></li>
+                        <li><a href="#flashing">Firmware</a></li>
+                        <li><a href="#tools">Tools</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Community</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 PhoneUnlock Pro. All rights reserved. This tool is for educational and legitimate use only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Phone Detection Simulation
+        document.getElementById('detect-btn').addEventListener('click', function() {
+            const message = document.getElementById('detection-message');
+            const detectedPhone = document.getElementById('detected-phone');
+            
+            message.textContent = "Device detected! Analyzing...";
+            
+            setTimeout(function() {
+                message.textContent = "Analysis complete!";
+                detectedPhone.style.display = 'flex';
+                
+                // Simulate different phone detection
+                const phones = [
+                    { model: "Samsung Galaxy S21", details: "Android 12 • Model: SM-G991U" },
+                    { model: "iPhone 13 Pro", details: "iOS 15 • Model: A2483" },
+                    { model: "Xiaomi Redmi Note 10", details: "Android 11 • Model: M2101K7AG" }
+                ];
+                
+                const randomPhone = phones[Math.floor(Math.random() * phones.length)];
+                document.getElementById('phone-model').textContent = randomPhone.model;
+                document.getElementById('phone-details').textContent = randomPhone.details;
+            }, 2000);
+        });
+        
+        // Brand-Model Selection
+        const brandSelect = document.getElementById('brand-select');
+        const modelSelect = document.getElementById('model-select');
+        
+        const models = {
+            samsung: ["Galaxy S23", "Galaxy S22", "Galaxy S21", "Galaxy A54", "Galaxy A34", "Galaxy Z Fold 4", "Galaxy Z Flip 4"],
+            apple: ["iPhone 14 Pro", "iPhone 14", "iPhone 13", "iPhone 12", "iPhone SE (2022)", "iPad Pro 12.9"],
+            xiaomi: ["Redmi Note 12", "Redmi Note 11", "Mi 13", "Mi 12", "Poco F5", "Poco X5"],
+            oneplus: ["OnePlus 11", "OnePlus 10 Pro", "OnePlus 9", "OnePlus Nord 3", "OnePlus Nord CE 3"],
+            lg: ["LG Velvet", "LG Wing", "LG G8", "LG V60", "LG Stylo 6"],
+            huawei: ["P50 Pro", "P40 Pro", "Mate 40 Pro", "Nova 9", "Enjoy 50"]
+        };
+        
+        brandSelect.addEventListener('change', function() {
+            const brand = this.value;
+            modelSelect.innerHTML = '<option value="">Select Model</option>';
+            
+            if (brand && models[brand]) {
+                models[brand].forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model.toLowerCase().replace(/\s+/g, '-');
+                    option.textContent = model;
+                    modelSelect.appendChild(option);
+                });
+            }
+        });
+        
+        // Mobile Menu Toggle
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            document.querySelector('nav ul').classList.toggle('show');
+        });
+    </script>
+</body>
+</html>
